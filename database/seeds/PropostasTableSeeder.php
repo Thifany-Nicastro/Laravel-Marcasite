@@ -15,6 +15,7 @@ class PropostasTableSeeder extends Seeder
         DB::table('propostas')->insert([
             [
                 'cliente_id'        => 1,
+                'user_id'           => 1,
                 'endereco'          => 'Rua Jorge Cecílio Daher',
                 'valor_total'       => 10000.00,
                 'valor_sinal'       => 2000.00,
@@ -28,6 +29,7 @@ class PropostasTableSeeder extends Seeder
             ],
             [
                 'cliente_id'        => 2,
+                'user_id'           => 1,
                 'endereco'          => 'Rua Treze',
                 'valor_total'       => 8000.00,
                 'valor_sinal'       => 1000.00,
@@ -41,6 +43,7 @@ class PropostasTableSeeder extends Seeder
             ],
             [
                 'cliente_id'        => 2,
+                'user_id'           => 1,
                 'endereco'          => 'Alameda Boa Ventura',
                 'valor_total'       => 6000.00,
                 'valor_sinal'       => 3000.00,
