@@ -19,7 +19,7 @@ class CreateClientesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->string('razao_social', 100);
+            $table->string('razao_social', 150);
             $table->string('nome_fantasia', 100);
             $table->string('cnpj', 14);
             $table->string('endereco', 150);
