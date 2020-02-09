@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class ClientesTableSeeder extends Seeder
 {
@@ -13,6 +14,7 @@ class ClientesTableSeeder extends Seeder
     {
         DB::table('clientes')->insert([
             [
+                'user_id'           => 1,
                 'razao_social'      => 'Kaza Arquitetura Ltda',
                 'nome_fantasia'     => 'Kaza Arquitetura',
                 'cnpj'              => '22478404000128',
@@ -22,8 +24,10 @@ class ClientesTableSeeder extends Seeder
                 'nome_responsavel'  => 'Amanda Cristiane Silveira',
                 'cpf'               => '74695721473',
                 'celular'           => '47994622862',
+                'created_at'        => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
+                'user_id'           => 1,
                 'razao_social'      => 'Xpressi Comércio Exterior Ltda',
                 'nome_fantasia'     => 'Xpressi',
                 'cnpj'              => '65691157000156',
@@ -33,8 +37,10 @@ class ClientesTableSeeder extends Seeder
                 'nome_responsavel'  => 'Osvaldo José Souza',
                 'cpf'               => '83328575383',
                 'celular'           => '51994674705',
+                'created_at'        => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
+                'user_id'           => 1,
                 'razao_social'      => 'CriArte Organização de Eventos Ltda',
                 'nome_fantasia'     => 'CriArte',
                 'cnpj'              => '22041901000164',
@@ -47,6 +53,7 @@ class ClientesTableSeeder extends Seeder
                 'created_at'        => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
+                'user_id'           => 1,
                 'razao_social'      => 'Magnetis Consultoria de Investimentos ME',
                 'nome_fantasia'     => 'Magnetis',
                 'cnpj'              => '20024918000188',
@@ -59,6 +66,7 @@ class ClientesTableSeeder extends Seeder
                 'created_at'        => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
+                'user_id'           => 1,
                 'razao_social'      => 'MSS Panificadora Ltda. EPP',
                 'nome_fantasia'     => 'Padaria Estrela',
                 'cnpj'              => '19097265000188',

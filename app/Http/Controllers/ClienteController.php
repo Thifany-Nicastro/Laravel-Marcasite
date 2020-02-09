@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
@@ -14,7 +16,10 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::latest()->paginate(7);
+        $clientes = Cliente::paginate(7);
+        //$query = DB::table('clientes')->where('user_id', '1')->get();
+        /*$id = Auth::user()->id;
+        $clientes = Cliente::where('user_id', $id)->paginate(7);*/
         return view('clientes.index', compact('clientes'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -47,7 +52,11 @@ class ClienteController extends Controller
             'cpf' => 'required',
             'celular' => 'required',
         ]);
-        Cliente::create($request->all());
+        
+        $clienteData = $request->all();
+        $clienteData['user_id'] = Auth::user()->id;
+
+        Cliente::create($clienteData);//$request->all());
         return redirect()->route('clientes.index')->with('success', 'Cliente cadastrado com sucesso');
     }
 

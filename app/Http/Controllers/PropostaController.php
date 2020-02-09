@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Cliente;
 use App\Exports\PropostasExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class PropostaController extends Controller
 {
@@ -17,7 +18,7 @@ class PropostaController extends Controller
      */
     public function index()
     {
-        $propostas = Proposta::latest()->paginate(7);
+        $propostas = Proposta::paginate(7);
         return view('propostas.index', compact('propostas'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -52,7 +53,13 @@ class PropostaController extends Controller
             'arquivo' => 'required',
             'status' => 'required',
         ]);
-        Proposta::create($request->all());
+
+        $propostaData = $request->all();
+        $propostaData['user_id'] = Auth::user()->id;
+
+        Proposta::create($propostaData);
+
+        //Proposta::create($request->all());
         return redirect()->route('propostas.index')->with('success', 'Proposta cadastrada com sucesso');
     }
 

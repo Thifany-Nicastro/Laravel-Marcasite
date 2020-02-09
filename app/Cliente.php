@@ -8,7 +8,7 @@ class Cliente extends Model
 {
     protected $table = 'clientes';
     protected $fillable = [
-        'razao_social', 'nome_fantasia', 'cnpj', 'endereco', 'email', 
+        'user_id', 'razao_social', 'nome_fantasia', 'cnpj', 'endereco', 'email', 
         'telefone', 'nome_responsavel', 'cpf', 'celular'
     ];
 
