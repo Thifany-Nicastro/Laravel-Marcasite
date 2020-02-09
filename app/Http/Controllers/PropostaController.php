@@ -120,6 +120,7 @@ class PropostaController extends Controller
             $proposta->update($request->all());
             return redirect()->route('propostas.index')->with('success', 'Proposta atualizada com sucesso');
         }
+        //Proposta::where('id','=', $id)->update(['qtde_parcelas' => 2]);
     }
 
     /**
@@ -165,5 +166,11 @@ class PropostaController extends Controller
     public function export()
     {
         return Excel::download(new PropostasExport, 'propostas.xlsx');
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $data = $request->all();
+        Proposta::where('id','=', $data['id'])->update(['status' => $data['status']]);
     }
 }

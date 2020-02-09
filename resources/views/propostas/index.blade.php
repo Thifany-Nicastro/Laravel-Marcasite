@@ -33,7 +33,8 @@
                     </select>
                 </div>
                 <div class="col-6">
-                    <input type="number" min="1" step="1" class="form-control" name="search-cliente" placeholder="ID do cliente">
+                    <input type="number" min="1" step="1" class="form-control" name="search-cliente"
+                        placeholder="ID do cliente">
                 </div>
                 <div class="col">
                     <select class="custom-select" name="search-status">
@@ -71,9 +72,9 @@
             <td>{{date('d/m/Y', strtotime($proposta->created_at))}}</td>
             <td>{{date('d/m/Y', strtotime($proposta->data_pagamento))}}</td>
             <td>{{$proposta->valor_total}}</td>
-            <td>{{$proposta->qtde_parcelas}}</td>     
+            <td>{{$proposta->qtde_parcelas}}</td>
             <td>
-                <select class="custom-select" name="status">
+                <select class="custom-select" name="status" id="{{$proposta->id}}">
                     @if($proposta->status == 0)
                     <option value="0" selected>aberta</option>
                     <option value="1">fechada</option>
@@ -98,4 +99,21 @@
 </table>
 {!! $propostas->links() !!}
 <a class="btn btn-primary mt-1" href="{{action('PropostaController@export')}}" role="button">Exportar para Excel</a>
+
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $("select[name ='status']").change(function () {
+        var valor = $(this).val();
+        var id = this.id;
+        $.ajax({
+           type:'POST',
+           url:'updatestatus',
+           data:{status:valor, id:id},
+        });
+    });
+</script>
 @endsection
