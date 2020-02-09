@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
@@ -16,10 +15,10 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::paginate(7);
+        //$clientes = Cliente::paginate(7);
         //$query = DB::table('clientes')->where('user_id', '1')->get();
-        /*$id = Auth::user()->id;
-        $clientes = Cliente::where('user_id', $id)->paginate(7);*/
+        $id = Auth::user()->id;
+        $clientes = Cliente::where('user_id', $id)->paginate(7);
         return view('clientes.index', compact('clientes'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -52,11 +51,11 @@ class ClienteController extends Controller
             'cpf' => 'required',
             'celular' => 'required',
         ]);
-        
+
         $clienteData = $request->all();
         $clienteData['user_id'] = Auth::user()->id;
 
-        Cliente::create($clienteData);//$request->all());
+        Cliente::create($clienteData); //$request->all());
         return redirect()->route('clientes.index')->with('success', 'Cliente cadastrado com sucesso');
     }
 
@@ -68,10 +67,13 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $propostas = Cliente::find($id)->propostas;
-
         $cliente = Cliente::findOrFail($id);
-        return view('clientes.show', compact('cliente', 'propostas'));
+        if (!Auth::user()->can('view', $cliente)) {
+            abort(403, trans('Desculpe, você não tem permissão :('));
+        } else {
+            $propostas = Cliente::find($id)->propostas;
+            return view('clientes.show', compact('cliente', 'propostas'));
+        }
     }
 
     /**
@@ -83,7 +85,12 @@ class ClienteController extends Controller
     public function edit($id)
     {
         $cliente = Cliente::findOrFail($id);
-        return view('clientes.edit', compact('cliente'));
+        if (!Auth::user()->can('view', $cliente)) {
+            abort(403, trans('Desculpe, você não tem permissão :('));
+        } else {
+            //$cliente = Cliente::findOrFail($id);
+            return view('clientes.edit', compact('cliente'));
+        }
     }
 
     /**
@@ -95,19 +102,24 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        request()->validate([
-            'razao_social' => 'required',
-            'nome_fantasia' => 'required',
-            'cnpj' => 'required',
-            'endereco' => 'required',
-            'email' => 'required',
-            'telefone' => 'required',
-            'nome_responsavel' => 'required',
-            'cpf' => 'required',
-            'celular' => 'required',
-        ]);
-        Cliente::find($id)->update($request->all());
-        return redirect()->route('clientes.index')->with('success', 'Cliente atualizado com sucesso');
+        $cliente = Cliente::findOrFail($id);
+        if (!Auth::user()->can('update', $cliente)) {
+            abort(403, trans('Desculpe, você não tem permissão :('));
+        } else {
+            request()->validate([
+                'razao_social' => 'required',
+                'nome_fantasia' => 'required',
+                'cnpj' => 'required',
+                'endereco' => 'required',
+                'email' => 'required',
+                'telefone' => 'required',
+                'nome_responsavel' => 'required',
+                'cpf' => 'required',
+                'celular' => 'required',
+            ]);
+            $cliente->update($request->all());
+            return redirect()->route('clientes.index')->with('success', 'Cliente atualizado com sucesso');
+        }
     }
 
     /**
@@ -118,7 +130,12 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        Cliente::find($id)->delete();
-        return redirect()->route('clientes.index')->with('success', 'Cliente deletado com sucesso');
+        $cliente = Cliente::findOrFail($id);
+        if (!Auth::user()->can('delete', $cliente)) {
+            abort(403, trans('Desculpe, você não tem permissão :('));
+        } else {
+            $cliente->delete();
+            return redirect()->route('clientes.index')->with('success', 'Cliente deletado com sucesso');
+        }
     }
 }
