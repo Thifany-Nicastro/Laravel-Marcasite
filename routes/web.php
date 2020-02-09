@@ -19,4 +19,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('propostas/export/', 'PropostaController@export');
     Route::resource('clientes', 'ClienteController');
     Route::resource('propostas', 'PropostaController');
+
+    Route::post('/updatestatus', 'PropostaController@updateStatus');
+    //Route::post('/updatestatus/{postdata}', 'PropostaController@updateStatus');
 });
