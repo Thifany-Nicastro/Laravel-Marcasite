@@ -20,7 +20,6 @@ class PropostaController extends Controller
     {
         $id = Auth::user()->id;
         $propostas = Proposta::where('user_id', $id)->paginate(7);
-        //$propostas = Proposta::paginate(7);
         return view('propostas.index', compact('propostas'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -58,10 +57,7 @@ class PropostaController extends Controller
 
         $propostaData = $request->all();
         $propostaData['user_id'] = Auth::user()->id;
-
         Proposta::create($propostaData);
-
-        //Proposta::create($request->all());
         return redirect()->route('propostas.index')->with('success', 'Proposta cadastrada com sucesso');
     }
 
@@ -163,7 +159,6 @@ class PropostaController extends Controller
                 ->where('user_id', '=', Auth::user()->id)
                 ->paginate(7);
         }
-
         return view('propostas.index', ['propostas' => $propostas]);
     }
 

@@ -11,22 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
+Route::get('/', 'Auth\LoginController@showLoginForm');
 
 Route::group(['middleware' => 'auth'], function () {
-
-    //Route::get('/', 'ClienteController@index');
-    //Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/search', 'PropostaController@search');
     Route::get('propostas/export/', 'PropostaController@export');
     Route::resource('clientes', 'ClienteController');
     Route::resource('propostas', 'PropostaController');
-
 });
-
-//Route::get('/home', 'HomeController@index')->name('home');
-//Route::resource('clientes', 'ClienteController')->middleware('auth');

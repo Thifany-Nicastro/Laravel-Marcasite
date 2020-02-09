@@ -15,8 +15,6 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        //$clientes = Cliente::paginate(7);
-        //$query = DB::table('clientes')->where('user_id', '1')->get();
         $id = Auth::user()->id;
         $clientes = Cliente::where('user_id', $id)->paginate(7);
         return view('clientes.index', compact('clientes'))->with('i', (request()->input('page', 1) - 1) * 5);
@@ -54,8 +52,7 @@ class ClienteController extends Controller
 
         $clienteData = $request->all();
         $clienteData['user_id'] = Auth::user()->id;
-
-        Cliente::create($clienteData); //$request->all());
+        Cliente::create($clienteData);
         return redirect()->route('clientes.index')->with('success', 'Cliente cadastrado com sucesso');
     }
 
@@ -88,7 +85,6 @@ class ClienteController extends Controller
         if (!Auth::user()->can('view', $cliente)) {
             abort(403, trans('Desculpe, você não tem permissão :('));
         } else {
-            //$cliente = Cliente::findOrFail($id);
             return view('clientes.edit', compact('cliente'));
         }
     }
