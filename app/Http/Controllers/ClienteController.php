@@ -15,8 +15,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $id = Auth::user()->id;
-        $clientes = Cliente::where('user_id', $id)->paginate(7);
+        $clientes = Cliente::where('user_id', Auth::user()->id)->paginate(7);
         return view('clientes.index', compact('clientes'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -39,15 +38,15 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'razao_social' => 'required',
-            'nome_fantasia' => 'required',
-            'cnpj' => 'required',
-            'endereco' => 'required',
-            'email' => 'required',
-            'telefone' => 'required',
-            'nome_responsavel' => 'required',
-            'cpf' => 'required',
-            'celular' => 'required',
+            'razao_social' => ['required', 'unique:clientes', 'max:150'],
+            'nome_fantasia' => ['required', 'unique:clientes', 'max:100'],
+            'cnpj' => ['required', 'unique:clientes', 'max:14'],
+            'endereco' => ['required', 'unique:clientes', 'max:150'],
+            'email' => ['required', 'unique:clientes', 'max:100'],
+            'telefone' => ['required', 'unique:clientes', 'max:11'],
+            'nome_responsavel' => ['required', 'max:100'],
+            'cpf' => ['required', 'max:11'],
+            'celular' => ['required', 'max:11'],
         ]);
 
         $clienteData = $request->all();
@@ -103,15 +102,15 @@ class ClienteController extends Controller
             abort(403, trans('Desculpe, você não tem permissão :('));
         } else {
             request()->validate([
-                'razao_social' => 'required',
-                'nome_fantasia' => 'required',
-                'cnpj' => 'required',
-                'endereco' => 'required',
-                'email' => 'required',
-                'telefone' => 'required',
-                'nome_responsavel' => 'required',
-                'cpf' => 'required',
-                'celular' => 'required',
+                'razao_social'      => ['required', 'unique:clientes', 'max:150'],
+                'nome_fantasia'     => ['required', 'unique:clientes', 'max:100'],
+                'cnpj'              => ['required', 'unique:clientes', 'max:14'],
+                'endereco'          => ['required', 'unique:clientes', 'max:150'],
+                'email'             => ['required', 'unique:clientes', 'max:100'],
+                'telefone'          => ['required', 'unique:clientes', 'max:11'],
+                'nome_responsavel'  => ['required', 'max:100'],
+                'cpf'               => ['required', 'max:11'],
+                'celular'           => ['required', 'max:11'],
             ]);
             $cliente->update($request->all());
             return redirect()->route('clientes.index')->with('success', 'Cliente atualizado com sucesso');

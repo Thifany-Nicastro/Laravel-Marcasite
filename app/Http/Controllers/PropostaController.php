@@ -18,8 +18,7 @@ class PropostaController extends Controller
      */
     public function index()
     {
-        $id = Auth::user()->id;
-        $propostas = Proposta::where('user_id', $id)->paginate(7);
+        $propostas = Proposta::where('user_id', Auth::user()->id)->paginate(7);
         return view('propostas.index', compact('propostas'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -30,7 +29,7 @@ class PropostaController extends Controller
      */
     public function create()
     {
-        $clientes = Cliente::all();
+        $clientes = Cliente::where('user_id', Auth::user()->id)->get();
         return view('propostas.create', compact('clientes'));
     }
 
@@ -43,16 +42,16 @@ class PropostaController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'cliente_id' => 'required',
-            'endereco' => 'required',
-            'valor_total' => 'required',
-            'valor_sinal' => 'required',
-            'qtde_parcelas' => 'required',
-            'valor_parcelas' => 'required',
-            'data_pagamento' => 'required',
-            'data_parcelas' => 'required',
-            'arquivo' => 'required',
-            'status' => 'required',
+            'cliente_id'        => ['required', 'integer'],
+            'endereco'          => ['required', 'max:150'],
+            'valor_total'       => ['required', 'numeric'],
+            'valor_sinal'       => ['required', 'numeric'],
+            'qtde_parcelas'     => ['required', 'integer'],
+            'valor_parcelas'    => ['required', 'numeric'],
+            'data_pagamento'    => ['required', 'date'],
+            'data_parcelas'     => ['required', 'date'],
+            'arquivo'           => ['required'],
+            'status'            => ['required', 'boolean'],
         ]);
 
         $propostaData = $request->all();
@@ -107,15 +106,16 @@ class PropostaController extends Controller
             abort(403, trans('Desculpe, você não tem permissão :('));
         } else {
             request()->validate([
-                'endereco' => 'required',
-                'valor_total' => 'required',
-                'valor_sinal' => 'required',
-                'qtde_parcelas' => 'required',
-                'valor_parcelas' => 'required',
-                'data_pagamento' => 'required',
-                'data_parcelas' => 'required',
-                'arquivo' => 'required',
-                'status' => 'required',
+                'cliente_id'        => ['required', 'integer'],
+                'endereco'          => ['required', 'max:150'],
+                'valor_total'       => ['required', 'numeric'],
+                'valor_sinal'       => ['required', 'numeric'],
+                'qtde_parcelas'     => ['required', 'integer'],
+                'valor_parcelas'    => ['required', 'numeric'],
+                'data_pagamento'    => ['required', 'date'],
+                'data_parcelas'     => ['required', 'date'],
+                'arquivo'           => ['required'],
+                'status'            => ['required', 'boolean'],
             ]);
             $proposta->update($request->all());
             return redirect()->route('propostas.index')->with('success', 'Proposta atualizada com sucesso');

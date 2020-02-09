@@ -16,13 +16,19 @@ class UsersTableSeeder extends Seeder
             [
                 'name' => 'Mateus Souza',
                 'email' => 'mateussouza@outlook.com',
-                'password' => '12345678',
+                'password' => bcrypt('password'),
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
                 'name' => 'Juliane de Almeida',
                 'email' => 'julianealmeida@gmail.com',
-                'password' => 'abcd1234',
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ],
+            [
+                'name' => 'Leonardo dos Santos',
+                'email' => 'leonardosantos@gmail.com',
+                'password' => bcrypt('password'),
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]
         ]);
