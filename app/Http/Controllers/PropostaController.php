@@ -53,7 +53,6 @@ class PropostaController extends Controller
             'arquivo'           => ['required'],
             'status'            => ['required', 'boolean'],
         ]);
-
         $propostaData = $request->all();
         $propostaData['user_id'] = Auth::user()->id;
         Proposta::create($propostaData);
@@ -120,7 +119,6 @@ class PropostaController extends Controller
             $proposta->update($request->all());
             return redirect()->route('propostas.index')->with('success', 'Proposta atualizada com sucesso');
         }
-        //Proposta::where('id','=', $id)->update(['qtde_parcelas' => 2]);
     }
 
     /**
